@@ -1,0 +1,354 @@
+{
+  "info": {
+    "name": "MMA Platform API",
+    "description": "Complete GraphQL API testing collection for MMA Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Schema Introspection",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { __schema { types { name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "2. Create Weight Classes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"mutation { lightweight: createWeightClass(input: {name: \\\"Lightweight\\\"}) { id name } welterweight: createWeightClass(input: {name: \\\"Welterweight\\\"}) { id name } middleweight: createWeightClass(input: {name: \\\"Middleweight\\\"}) { id name } heavyweight: createWeightClass(input: {name: \\\"Heavyweight\\\"}) { id name } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "3. Get All Weight Classes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { weightClasses { id name } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "4. Create Fighters",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"mutation { mcgregor: createFighter(input: { name: \\\"Conor McGregor\\\" birth_date: \\\"1988-07-14\\\" weightClassId: 1 }) { id name wins losses draws } khabib: createFighter(input: { name: \\\"Khabib Nurmagomedov\\\" birth_date: \\\"1988-09-20\\\" weightClassId: 1 }) { id name wins losses draws } jones: createFighter(input: { name: \\\"Jon Jones\\\" birth_date: \\\"1987-07-19\\\" weightClassId: 2 }) { id name wins losses draws } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "5. Get All Fighters",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { fighters { id name birth_date wins losses draws knockouts submissions weightClass { id name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "6. Get Fighter by ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { fighter(id: 1) { id name birth_date wins losses draws knockouts submissions weightClass { id name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "7. Create Events",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"mutation { ufc229: createEvent(input: { name: \\\"UFC 229\\\" location: \\\"Las Vegas, Nevada\\\" event_date: \\\"2018-10-06\\\" }) { id name location event_date } ufc300: createEvent(input: { name: \\\"UFC 300\\\" location: \\\"Las Vegas, Nevada\\\" event_date: \\\"2024-04-13\\\" }) { id name location event_date } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "8. Get All Events",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { events { id name location event_date } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "9. Create Fight (McGregor vs Khabib)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"mutation { createFight(input: { eventId: 1 fighter1Id: 1 fighter2Id: 2 result: SUBMISSION winner_id: 2 }) { id result winner { name } fighter1 { name } fighter2 { name } event { name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "10. Get All Fights",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { fights { id result winner { name } fighter1 { name } fighter2 { name } event { name location event_date } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "11. Get Rankings by Weight Class",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { rankingsByWeightClass(weightClassId: 1) { id rankPosition points fighter { name wins losses draws } weightClass { name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "12. Update Fighter",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"mutation { updateFighter(id: 1, input: { name: \\\"Conor McGregor - The Notorious\\\" }) { id name wins losses draws } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "13. Fighters by Weight Class",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { fightersByWeightClass(weightClassId: 1) { id name wins losses draws weightClass { name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "14. Complete Data Query",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { weightClasses { id name } fighters { id name birth_date wins losses draws knockouts submissions weightClass { name } } events { id name location event_date } fights { id result winner { name } fighter1 { name } fighter2 { name } event { name } } }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    },
+    {
+      "name": "15. Server Status Check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"query { __typename }\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "3000",
+          "path": [ "graphql" ]
+        }
+      }
+    }
+  ]
+}

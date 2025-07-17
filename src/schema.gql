@@ -1,0 +1,130 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WeightClass {
+  id: ID!
+  name: String!
+}
+
+type Fighter {
+  id: ID!
+  name: String!
+  birth_date: String
+  wins: Int!
+  losses: Int!
+  draws: Int!
+  knockouts: Int!
+  submissions: Int!
+  weightClassId: Int!
+  weightClass: WeightClass
+}
+
+type Fight {
+  id: ID!
+  eventId: Int!
+  fighter1Id: Int!
+  fighter2Id: Int!
+  result: FightResult!
+  winnerId: Int
+  event: Event
+  fighter1: Fighter
+  fighter2: Fighter
+  winner: Fighter
+}
+
+enum FightResult {
+  KO
+  SUBMISSION
+  DECISION
+  DRAW
+}
+
+type Event {
+  id: ID!
+  name: String!
+  location: String!
+  event_date: String
+  fights: [Fight!]
+}
+
+type Ranking {
+  id: ID!
+  fighterId: Int!
+  weightClassId: Int!
+  points: Int!
+  rankPosition: Int!
+  fighter: Fighter
+  weightClass: WeightClass
+}
+
+type Query {
+  fighters: [Fighter!]!
+  fighter(id: Int!): Fighter!
+  fightersByWeightClass(weightClassId: Int!): [Fighter!]!
+  events: [Event!]!
+  event(id: Int!): Event!
+  fights: [Fight!]!
+  fight(id: Int!): Fight!
+  rankingsByWeightClass(weightClassId: Int!): [Ranking!]!
+  weightClasses: [WeightClass!]!
+}
+
+type Mutation {
+  createFighter(input: CreateFighterInput!): Fighter!
+  updateFighter(id: Int!, input: UpdateFighterInput!): Fighter!
+  deleteFighter(id: Int!): Boolean!
+  createEvent(input: CreateEventInput!): Event!
+  updateEvent(id: Int!, input: UpdateEventInput!): Event!
+  deleteEvent(id: Int!): Boolean!
+  createFight(input: CreateFightInput!): Fight!
+  updateFight(id: Int!, input: UpdateFightInput!): Fight!
+  deleteFight(id: Int!): Boolean!
+  createWeightClass(input: CreateWeightClassInput!): WeightClass!
+  deleteWeightClass(id: Int!): Boolean!
+  deleteAllWeightClasses: Boolean!
+}
+
+input CreateFighterInput {
+  name: String!
+  birth_date: String
+  weightClassId: Int!
+}
+
+input UpdateFighterInput {
+  name: String
+  birth_date: String
+  weightClassId: Int
+}
+
+input CreateEventInput {
+  name: String!
+  location: String!
+  event_date: String!
+}
+
+input UpdateEventInput {
+  name: String
+  location: String
+  event_date: String
+}
+
+input CreateFightInput {
+  eventId: Int!
+  fighter1Id: Int!
+  fighter2Id: Int!
+  result: FightResult!
+  winnerId: Int
+}
+
+input UpdateFightInput {
+  eventId: Int
+  fighter1Id: Int
+  fighter2Id: Int
+  result: FightResult
+  winnerId: Int
+}
+
+input CreateWeightClassInput {
+  name: String!
+}

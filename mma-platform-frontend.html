@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MMA Platform - Admin Panel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .dashboard {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card h2 {
+        color: #2a5298;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #2a5298;
+      }
+
+      .btn {
+        background: linear-gradient(45deg, #2a5298, #1e3c72);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(42, 82, 152, 0.4);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(45deg, #6c757d, #495057);
+      }
+
+      .btn-success {
+        background: linear-gradient(45deg, #28a745, #20c997);
+      }
+
+      .btn-danger {
+        background: linear-gradient(45deg, #dc3545, #c82333);
+      }
+
+      .btn-warning {
+        background: linear-gradient(45deg, #ffc107, #e0a800);
+      }
+
+      .results {
+        background: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        max-height: 300px;
+        overflow-y: auto;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+      }
+
+      .results.success {
+        background: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+
+      .results.error {
+        background: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .stat-card h3 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+      }
+
+      .stat-card p {
+        opacity: 0.9;
+      }
+
+      .tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .tab {
+        padding: 12px 25px;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px 8px 0 0;
+        margin-right: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .tab.active {
+        background: #2a5298;
+        color: white;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .fighter-list,
+      .event-list,
+      .fight-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .list-item {
+        background: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .list-item:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+      }
+
+      .list-item h4 {
+        color: #2a5298;
+        margin-bottom: 8px;
+      }
+
+      .list-item p {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      .badge-success {
+        background: #28a745;
+        color: white;
+      }
+
+      .badge-warning {
+        background: #ffc107;
+        color: #212529;
+      }
+
+      .badge-danger {
+        background: #dc3545;
+        color: white;
+      }
+
+      .badge-info {
+        background: #17a2b8;
+        color: white;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
+
+      .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #2a5298;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .dashboard {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🥊 MMA Platform</h1>
+        <p>Admin Panel - Test Your GraphQL API</p>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="fighters-count">0</h3>
+          <p>Fighters</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="events-count">0</h3>
+          <p>Events</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="fights-count">0</h3>
+          <p>Fights</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="weight-classes-count">0</h3>
+          <p>Weight Classes</p>
+        </div>
+      </div>
+
+      <!-- Main Dashboard -->
+      <div class="dashboard">
+        <!-- Weight Classes Management -->
+        <div class="card">
+          <h2>🏆 Weight Classes</h2>
+          <div class="form-group">
+            <label for="weight-class-name">Weight Class Name:</label>
+            <input
+              type="text"
+              id="weight-class-name"
+              placeholder="e.g., Lightweight, Heavyweight"
+            />
+          </div>
+          <button class="btn btn-success" onclick="createWeightClass()">
+            Create Weight Class
+          </button>
+          <button class="btn btn-secondary" onclick="loadWeightClasses()">
+            Load All
+          </button>
+          <button class="btn btn-danger" onclick="cleanupDuplicateWeightClasses()">
+            Cleanup Duplicates
+          </button>
+          <div id="weight-classes-result" class="results"></div>
+        </div>
+
+        <!-- Fighters Management -->
+        <div class="card">
+          <h2>👊 Fighters</h2>
+          <div class="form-group">
+            <label for="fighter-name">Name:</label>
+            <input
+              type="text"
+              id="fighter-name"
+              placeholder="e.g., Conor McGregor"
+            />
+          </div>
+          <div class="form-group">
+            <label for="fighter-birth-date">Birth Date:</label>
+            <input type="date" id="fighter-birth-date" />
+          </div>
+          <div class="form-group">
+            <label for="fighter-weight-class">Weight Class:</label>
+            <select id="fighter-weight-class">
+              <option value="">Select Weight Class</option>
+            </select>
+          </div>
+          <button class="btn btn-success" onclick="createFighter()">
+            Create Fighter
+          </button>
+          <button class="btn btn-secondary" onclick="loadFighters()">
+            Load All
+          </button>
+          <div id="fighters-result" class="results"></div>
+        </div>
+      </div>
+
+      <!-- Events Management -->
+      <div class="card">
+        <h2>🎪 Events</h2>
+        <div
+          style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px"
+        >
+          <div class="form-group">
+            <label for="event-name">Event Name:</label>
+            <input type="text" id="event-name" placeholder="e.g., UFC 300" />
+          </div>
+          <div class="form-group">
+            <label for="event-location">Location:</label>
+            <input
+              type="text"
+              id="event-location"
+              placeholder="e.g., Las Vegas, Nevada"
+            />
+          </div>
+          <div class="form-group">
+            <label for="event-date">Event Date:</label>
+            <input type="date" id="event-date" />
+          </div>
+        </div>
+        <button class="btn btn-success" onclick="submitEvent()">
+          Create Event
+        </button>
+        <button class="btn btn-secondary" onclick="loadEvents()">
+          Load All
+        </button>
+        <div id="events-result" class="results"></div>
+      </div>
+
+      <!-- Fights Management -->
+      <div class="card">
+        <h2>🥊 Fights</h2>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+          "
+        >
+          <div class="form-group">
+            <label for="fight-weight-class">Weight Class:</label>
+            <select id="fight-weight-class">
+              <option value="">Select Weight Class</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fight-event">Event:</label>
+            <select id="fight-event">
+              <option value="">Select Event</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fighter1">Fighter 1:</label>
+            <select id="fighter1">
+              <option value="">Select Fighter</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fighter2">Fighter 2:</label>
+            <select id="fighter2">
+              <option value="">Select Fighter</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fight-result">Result:</label>
+            <select id="fight-result">
+              <option value="">Select Result</option>
+              <option value="KO">Knockout</option>
+              <option value="SUBMISSION">Submission</option>
+              <option value="DECISION">Decision</option>
+              <option value="DRAW">Draw</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fight-winner">Winner:</label>
+          <select id="fight-winner">
+            <option value="">Select Winner</option>
+          </select>
+        </div>
+        <button class="btn btn-success" onclick="createFight()">
+          Create Fight
+        </button>
+        <button class="btn btn-secondary" onclick="loadFights()">
+          Load All
+        </button>
+        <div id="fights-result" class="results"></div>
+      </div>
+
+      <!-- Rankings -->
+      <div class="card">
+        <h2>📊 Rankings</h2>
+        <div class="form-group">
+          <label for="ranking-weight-class">Weight Class:</label>
+          <select id="ranking-weight-class">
+            <option value="">Select Weight Class</option>
+          </select>
+        </div>
+        <button class="btn btn-warning" onclick="loadRankings()">
+          Load Rankings
+        </button>
+        <div id="rankings-result" class="results"></div>
+      </div>
+
+      <!-- Data Viewer -->
+      <div class="card">
+        <h2>📋 Data Viewer</h2>
+        <div class="tabs">
+          <button class="tab active" onclick="showTab('fighters-tab')">
+            Fighters
+          </button>
+          <button class="tab" onclick="showTab('events-tab')">Events</button>
+          <button class="tab" onclick="showTab('fights-tab')">Fights</button>
+          <button class="tab" onclick="showTab('weight-classes-tab')">
+            Weight Classes
+          </button>
+        </div>
+
+        <div id="fighters-tab" class="tab-content active">
+          <div id="fighters-list" class="fighter-list"></div>
+        </div>
+
+        <div id="events-tab" class="tab-content">
+          <div id="events-list" class="event-list"></div>
+        </div>
+
+        <div id="fights-tab" class="tab-content">
+          <div id="fights-list" class="fight-list"></div>
+        </div>
+
+        <div id="weight-classes-tab" class="tab-content">
+          <div id="weight-classes-list" class="fighter-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = 'http://localhost:3000/graphql';
+
+      async function graphqlRequest(query, variables = {}) {
+        try {
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query, variables }),
+          });
+
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          return { errors: [{ message: error.message }] };
+        }
+      }
+
+      function showResult(elementId, result, isSuccess = true) {
+        const element = document.getElementById(elementId);
+        element.className = `results ${isSuccess ? 'success' : 'error'}`;
+        element.textContent = JSON.stringify(result, null, 2);
+      }
+
+      function showLoading(elementId) {
+        const element = document.getElementById(elementId);
+        element.innerHTML =
+          '<div class="loading"><div class="spinner"></div>Loading...</div>';
+      }
+
+      // Weight Classes
+      async function createWeightClass() {
+        const name = document.getElementById('weight-class-name').value;
+        if (!name) {
+          alert('Please enter a weight class name');
+          return;
+        }
+
+        showLoading('weight-classes-result');
+        const query = `
+                mutation {
+                    createWeightClass(input: { name: "${name}" }) {
+                        id
+                        name
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('weight-classes-result', result, !result.errors);
+
+        if (!result.errors) {
+          document.getElementById('weight-class-name').value = '';
+          loadWeightClasses();
+          updateStats();
+        }
+      }
+
+      async function loadWeightClasses() {
+        showLoading('weight-classes-result');
+        const query = `
+                query {
+                    weightClasses {
+                        id
+                        name
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('weight-classes-result', result, !result.errors);
+
+        if (!result.errors) {
+          updateWeightClassSelects(result.data.weightClasses);
+          updateWeightClassesList(result.data.weightClasses);
+        }
+      }
+
+      async function cleanupDuplicateWeightClasses() {
+        if (!confirm('This will remove duplicate weight classes and reassign fighters. Are you sure?')) {
+          return;
+        }
+
+        showLoading('weight-classes-result');
+        
+        // Get all weight classes and fighters
+        const query = `
+          query {
+            weightClasses {
+              id
+              name
+            }
+            fighters {
+              id
+              name
+              weightClass {
+                id
+                name
+              }
+            }
+          }
+        `;
+
+        const result = await graphqlRequest(query);
+        
+        if (result.errors) {
+          showResult('weight-classes-result', result, false);
+          return;
+        }
+
+        const weightClasses = result.data.weightClasses;
+        const fighters = result.data.fighters;
+        
+        // Group weight classes by name
+        const nameGroups = {};
+        weightClasses.forEach(wc => {
+          if (!nameGroups[wc.name]) {
+            nameGroups[wc.name] = [];
+          }
+          nameGroups[wc.name].push(wc);
+        });
+
+        let totalProcessed = 0;
+        let errors = [];
+
+        for (const [name, weightClassGroup] of Object.entries(nameGroups)) {
+          if (weightClassGroup.length <= 1) continue; // No duplicates
+
+          // Keep the first one, mark others for deletion
+          const keepId = weightClassGroup[0].id;
+          const duplicateIds = weightClassGroup.slice(1).map(wc => wc.id);
+
+          console.log(`Processing duplicates for ${name}: keeping ${keepId}, removing ${duplicateIds.join(', ')}`);
+
+          // First, reassign all fighters from duplicate weight classes to the one we're keeping
+          for (const duplicateId of duplicateIds) {
+            const fightersToReassign = fighters.filter(f => f.weightClass.id === duplicateId);
+            
+            for (const fighter of fightersToReassign) {
+              const updateQuery = `
+                mutation {
+                  updateFighter(input: {
+                    id: ${fighter.id}
+                    name: "${fighter.name}"
+                    weightClassId: ${keepId}
+                  }) {
+                    id
+                    name
+                  }
+                }
+              `;
+              
+              const updateResult = await graphqlRequest(updateQuery);
+              if (updateResult.errors) {
+                errors.push(`Failed to reassign fighter ${fighter.name}: ${updateResult.errors[0].message}`);
+              }
+            }
+          }
+
+          // Now delete the duplicate weight classes
+          for (const duplicateId of duplicateIds) {
+            const deleteQuery = `
+              mutation {
+                deleteWeightClass(id: ${duplicateId})
+              }
+            `;
+            
+            const deleteResult = await graphqlRequest(deleteQuery);
+            
+            if (deleteResult.errors) {
+              errors.push(`Failed to delete duplicate ${name} (ID ${duplicateId}): ${deleteResult.errors[0].message}`);
+            } else if (deleteResult.data.deleteWeightClass) {
+              totalProcessed++;
+            }
+          }
+        }
+
+        if (errors.length > 0) {
+          showResult('weight-classes-result', { 
+            message: `Processed ${totalProcessed} duplicates, but had ${errors.length} errors`,
+            errors: errors 
+          }, false);
+        } else {
+          showResult('weight-classes-result', { 
+            message: `Successfully cleaned up ${totalProcessed} duplicate weight classes!` 
+          }, true);
+        }
+
+        // Reload the weight classes
+        loadWeightClasses();
+      }
+
+      // Fighters
+      async function createFighter() {
+        const name = document.getElementById('fighter-name').value;
+        const birthDate = document.getElementById('fighter-birth-date').value;
+        const weightClassId = document.getElementById(
+          'fighter-weight-class',
+        ).value;
+
+        if (!name || !weightClassId) {
+          alert('Please fill in all required fields');
+          return;
+        }
+
+        showLoading('fighters-result');
+        const query = `
+                mutation {
+                    createFighter(input: {
+                        name: "${name}"
+                        birth_date: "${birthDate}"
+                        weightClassId: ${weightClassId}
+                    }) {
+                        id
+                        name
+                        wins
+                        losses
+                        draws
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('fighters-result', result, !result.errors);
+
+        if (!result.errors) {
+          document.getElementById('fighter-name').value = '';
+          document.getElementById('fighter-birth-date').value = '';
+          loadFighters();
+          updateStats();
+        }
+      }
+
+      async function loadFighters() {
+        showLoading('fighters-result');
+        const query = `
+                query {
+                    fighters {
+                        id
+                        name
+                        birth_date
+                        wins
+                        losses
+                        draws
+                        knockouts
+                        submissions
+                        weightClass {
+                            id
+                            name
+                        }
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('fighters-result', result, !result.errors);
+
+        if (!result.errors) {
+          updateFighterSelects(result.data.fighters);
+          updateFightersList(result.data.fighters);
+        }
+      }
+
+      // Events
+      async function submitEvent() {
+        const name = document.getElementById('event-name').value;
+        const location = document.getElementById('event-location').value;
+        const eventDate = document.getElementById('event-date').value;
+
+        if (!name || !location) {
+          alert('Please fill in all required fields');
+          return;
+        }
+
+        showLoading('events-result');
+        const query = `
+                mutation {
+                    createEvent(input: {
+                        name: "${name}"
+                        location: "${location}"
+                        event_date: "${eventDate}"
+                    }) {
+                        id
+                        name
+                        location
+                        event_date
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('events-result', result, !result.errors);
+
+        if (!result.errors) {
+          document.getElementById('event-name').value = '';
+          document.getElementById('event-location').value = '';
+          document.getElementById('event-date').value = '';
+          loadEvents();
+          updateStats();
+        }
+      }
+
+      async function loadEvents() {
+        showLoading('events-result');
+        const query = `
+                query {
+                    events {
+                        id
+                        name
+                        location
+                        event_date
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('events-result', result, !result.errors);
+
+        if (!result.errors) {
+          updateEventSelects(result.data.events);
+          updateEventsList(result.data.events);
+        }
+      }
+
+      // Fights
+      async function createFight() {
+        const weightClassId = document.getElementById('fight-weight-class').value;
+        const eventId = document.getElementById('fight-event').value;
+        const fighter1Id = document.getElementById('fighter1').value;
+        const fighter2Id = document.getElementById('fighter2').value;
+        const result = document.getElementById('fight-result').value;
+        const winnerId = document.getElementById('fight-winner').value;
+
+        if (!weightClassId || !eventId || !fighter1Id || !fighter2Id || !result) {
+          alert('Please fill in all required fields');
+          return;
+        }
+
+        if (fighter1Id === fighter2Id) {
+          alert('Fighter 1 and Fighter 2 cannot be the same person');
+          return;
+        }
+
+        showLoading('fights-result');
+        const query = `
+                mutation {
+                    createFight(input: {
+                        eventId: ${eventId}
+                        fighter1Id: ${fighter1Id}
+                        fighter2Id: ${fighter2Id}
+                        result: ${result}
+                        winnerId: ${winnerId}
+                    }) {
+                        id
+                        result
+                        winner {
+                            name
+                        }
+                        fighter1 {
+                            name
+                        }
+                        fighter2 {
+                            name
+                        }
+                        event {
+                            name
+                        }
+                    }
+                }
+            `;
+
+        const result2 = await graphqlRequest(query);
+        showResult('fights-result', result2, !result2.errors);
+
+        if (!result2.errors) {
+          // Clear the form
+          document.getElementById('fight-weight-class').value = '';
+          document.getElementById('fight-event').value = '';
+          document.getElementById('fighter1').value = '';
+          document.getElementById('fighter2').value = '';
+          document.getElementById('fight-result').value = '';
+          document.getElementById('fight-winner').value = '';
+          
+          // Update the dropdowns to remove filters
+          if (window.allFighters) {
+            updateFighterDropdown('fighter1', []);
+            updateFighterDropdown('fighter2', []);
+            updateWinnerDropdown();
+          }
+          
+          loadFights();
+          updateStats();
+        }
+      }
+
+      async function loadFights() {
+        showLoading('fights-result');
+        const query = `
+                query {
+                    fights {
+                        id
+                        result
+                        winner {
+                            name
+                        }
+                        fighter1 {
+                            name
+                        }
+                        fighter2 {
+                            name
+                        }
+                        event {
+                            name
+                            location
+                            event_date
+                        }
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        console.log('loadFights result:', result); // Debug log
+        showResult('fights-result', result, !result.errors);
+
+        if (!result.errors) {
+          console.log('Fights data:', result.data.fights); // Debug log
+          updateFightsList(result.data.fights);
+        }
+      }
+
+      // Rankings
+      async function loadRankings() {
+        const weightClassId = document.getElementById(
+          'ranking-weight-class',
+        ).value;
+        if (!weightClassId) {
+          alert('Please select a weight class');
+          return;
+        }
+
+        showLoading('rankings-result');
+        const query = `
+                query {
+                    rankingsByWeightClass(weightClassId: ${weightClassId}) {
+                        id
+                        rankPosition
+                        points
+                        fighter {
+                            name
+                            wins
+                            losses
+                            draws
+                        }
+                        weightClass {
+                            name
+                        }
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        showResult('rankings-result', result, !result.errors);
+      }
+
+      // Helper functions
+      function updateWeightClassSelects(weightClasses) {
+        const selects = ['fighter-weight-class', 'ranking-weight-class', 'fight-weight-class'];
+        selects.forEach((selectId) => {
+          const select = document.getElementById(selectId);
+          select.innerHTML = '<option value="">Select Weight Class</option>';
+          weightClasses.forEach((wc) => {
+            select.innerHTML += `<option value="${wc.id}">${wc.name}</option>`;
+          });
+        });
+      }
+
+      function updateFighterSelects(fighters) {
+        // Store fighters globally for filtering
+        window.allFighters = fighters;
+        
+        // Initially, don't show any fighters until weight class is selected
+        updateFighterDropdown('fighter1', []);
+        updateFighterDropdown('fighter2', []);
+        updateWinnerDropdown();
+        
+        // Add event listeners for filtering
+        setupFighterFiltering();
+      }
+
+      function filterFightersByWeightClass(weightClassId) {
+        if (!window.allFighters || !weightClassId) {
+          return [];
+        }
+        return window.allFighters.filter(fighter => 
+          fighter.weightClass && fighter.weightClass.id == weightClassId
+        );
+      }
+
+      function handleWeightClassChange() {
+        const weightClassId = document.getElementById('fight-weight-class').value;
+        
+        // Clear current selections
+        document.getElementById('fighter1').value = '';
+        document.getElementById('fighter2').value = '';
+        document.getElementById('fight-winner').value = '';
+        
+        if (weightClassId) {
+          const filteredFighters = filterFightersByWeightClass(weightClassId);
+          updateFighterDropdown('fighter1', filteredFighters);
+          updateFighterDropdown('fighter2', filteredFighters);
+        } else {
+          updateFighterDropdown('fighter1', []);
+          updateFighterDropdown('fighter2', []);
+        }
+        
+        updateWinnerDropdown();
+      }
+
+      function updateFighterDropdown(selectId, fighters, excludeId = null) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">Select Fighter</option>';
+        
+        fighters.forEach((fighter) => {
+          // Exclude the fighter if it's already selected in another dropdown
+          if (!excludeId || fighter.id != excludeId) {
+            select.innerHTML += `<option value="${fighter.id}">${fighter.name}</option>`;
+          }
+        });
+      }
+
+      function updateWinnerDropdown() {
+        const fighter1Id = document.getElementById('fighter1').value;
+        const fighter2Id = document.getElementById('fighter2').value;
+        const winnerSelect = document.getElementById('fight-winner');
+        
+        winnerSelect.innerHTML = '<option value="">Select Winner</option>';
+        
+        if (fighter1Id && window.allFighters) {
+          const fighter1 = window.allFighters.find(f => f.id == fighter1Id);
+          if (fighter1) {
+            winnerSelect.innerHTML += `<option value="${fighter1.id}">${fighter1.name}</option>`;
+          }
+        }
+        
+        if (fighter2Id && window.allFighters) {
+          const fighter2 = window.allFighters.find(f => f.id == fighter2Id);
+          if (fighter2) {
+            winnerSelect.innerHTML += `<option value="${fighter2.id}">${fighter2.name}</option>`;
+          }
+        }
+      }
+
+      function setupFighterFiltering() {
+        const fighter1Select = document.getElementById('fighter1');
+        const fighter2Select = document.getElementById('fighter2');
+        const weightClassSelect = document.getElementById('fight-weight-class');
+        
+        // Remove existing event listeners to avoid duplicates
+        fighter1Select.removeEventListener('change', handleFighter1Change);
+        fighter2Select.removeEventListener('change', handleFighter2Change);
+        weightClassSelect.removeEventListener('change', handleWeightClassChange);
+        
+        // Add new event listeners
+        fighter1Select.addEventListener('change', handleFighter1Change);
+        fighter2Select.addEventListener('change', handleFighter2Change);
+        weightClassSelect.addEventListener('change', handleWeightClassChange);
+      }
+
+      function handleFighter1Change() {
+        const fighter1Id = document.getElementById('fighter1').value;
+        const fighter2Select = document.getElementById('fighter2');
+        const currentFighter2 = fighter2Select.value;
+        const weightClassId = document.getElementById('fight-weight-class').value;
+        
+        // Get fighters for the selected weight class
+        const weightClassFighters = filterFightersByWeightClass(weightClassId);
+        
+        // Update fighter2 dropdown to exclude fighter1
+        updateFighterDropdown('fighter2', weightClassFighters, fighter1Id);
+        
+        // Restore fighter2 selection if it's still valid
+        if (currentFighter2 && currentFighter2 !== fighter1Id) {
+          fighter2Select.value = currentFighter2;
+        }
+        
+        updateWinnerDropdown();
+      }
+
+      function handleFighter2Change() {
+        const fighter2Id = document.getElementById('fighter2').value;
+        const fighter1Select = document.getElementById('fighter1');
+        const currentFighter1 = fighter1Select.value;
+        const weightClassId = document.getElementById('fight-weight-class').value;
+        
+        // Get fighters for the selected weight class
+        const weightClassFighters = filterFightersByWeightClass(weightClassId);
+        
+        // Update fighter1 dropdown to exclude fighter2
+        updateFighterDropdown('fighter1', weightClassFighters, fighter2Id);
+        
+        // Restore fighter1 selection if it's still valid
+        if (currentFighter1 && currentFighter1 !== fighter2Id) {
+          fighter1Select.value = currentFighter1;
+        }
+        
+        updateWinnerDropdown();
+      }
+
+      function updateEventSelects(events) {
+        const select = document.getElementById('fight-event');
+        select.innerHTML = '<option value="">Select Event</option>';
+        events.forEach((event) => {
+          select.innerHTML += `<option value="${event.id}">${event.name}</option>`;
+        });
+      }
+
+      function updateFightersList(fighters) {
+        const container = document.getElementById('fighters-list');
+        container.innerHTML = '';
+
+        fighters.forEach((fighter) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+                    <h4>${fighter.name}</h4>
+                    <p><strong>Record:</strong> ${fighter.wins}W - ${fighter.losses}L - ${fighter.draws}D</p>
+                    <p><strong>Weight Class:</strong> ${fighter.weightClass?.name || 'N/A'}</p>
+                    <p><strong>Birth Date:</strong> ${fighter.birth_date || 'N/A'}</p>
+                    <span class="badge badge-success">${fighter.knockouts} KOs</span>
+                    <span class="badge badge-warning">${fighter.submissions} Subs</span>
+                `;
+          container.appendChild(item);
+        });
+      }
+
+      function updateEventsList(events) {
+        const container = document.getElementById('events-list');
+        container.innerHTML = '';
+
+        events.forEach((event) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+                    <h4>${event.name}</h4>
+                    <p><strong>Location:</strong> ${event.location}</p>
+                    <p><strong>Date:</strong> ${event.event_date || 'N/A'}</p>
+                `;
+          container.appendChild(item);
+        });
+      }
+
+      function updateFightsList(fights) {
+        console.log('updateFightsList called with:', fights); // Debug log
+        const container = document.getElementById('fights-list');
+        console.log('fights-list container:', container); // Debug log
+        container.innerHTML = '';
+
+        fights.forEach((fight) => {
+          console.log('Processing fight:', fight); // Debug log
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+                    <h4>${fight.fighter1.name} vs ${fight.fighter2.name}</h4>
+                    <p><strong>Event:</strong> ${fight.event.name}</p>
+                    <p><strong>Result:</strong> ${fight.result}</p>
+                    <p><strong>Winner:</strong> ${fight.winner?.name || 'N/A'}</p>
+                    <span class="badge badge-info">${fight.event.location}</span>
+                    <span class="badge badge-secondary">${fight.event.event_date}</span>
+                `;
+          container.appendChild(item);
+        });
+        console.log('updateFightsList completed'); // Debug log
+      }
+
+      function updateWeightClassesList(weightClasses) {
+        const container = document.getElementById('weight-classes-list');
+        container.innerHTML = '';
+
+        weightClasses.forEach((wc) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+                    <h4>${wc.name}</h4>
+                    <p><strong>ID:</strong> ${wc.id}</p>
+                `;
+          container.appendChild(item);
+        });
+      }
+
+      function showTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach((content) => {
+          content.classList.remove('active');
+        });
+
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab').forEach((tab) => {
+          tab.classList.remove('active');
+        });
+
+        // Show selected tab content
+        document.getElementById(tabName).classList.add('active');
+
+        // Add active class to clicked tab
+        event.target.classList.add('active');
+
+        // Load data when specific tabs are selected
+        switch(tabName) {
+          case 'fights-tab':
+            loadFights();
+            break;
+          case 'fighters-tab':
+            loadFighters();
+            break;
+          case 'events-tab':
+            loadEvents();
+            break;
+          case 'weight-classes-tab':
+            loadWeightClasses();
+            break;
+        }
+      }
+
+      async function updateStats() {
+        try {
+          const [fighters, events, fights, weightClasses] = await Promise.all([
+            graphqlRequest('query { fighters { id } }'),
+            graphqlRequest('query { events { id } }'),
+            graphqlRequest('query { fights { id } }'),
+            graphqlRequest('query { weightClasses { id } }'),
+          ]);
+
+          document.getElementById('fighters-count').textContent =
+            fighters.data?.fighters?.length || 0;
+          document.getElementById('events-count').textContent =
+            events.data?.events?.length || 0;
+          document.getElementById('fights-count').textContent =
+            fights.data?.fights?.length || 0;
+          document.getElementById('weight-classes-count').textContent =
+            weightClasses.data?.weightClasses?.length || 0;
+        } catch (error) {
+          console.error('Error updating stats:', error);
+        }
+      }
+
+      // Initialize
+      window.onload = function () {
+        loadWeightClasses();
+        loadFighters();
+        loadEvents();
+        loadFights();
+        updateStats();
+      };
+    </script>
+  </body>
+</html>

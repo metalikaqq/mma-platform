@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MMA Platform GraphQL Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .result {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 3px;
+        margin-top: 10px;
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MMA Platform GraphQL API Test</h1>
+
+    <div class="test-section">
+      <h2>1. Test Schema</h2>
+      <button onclick="testSchema()">Test GraphQL Schema</button>
+      <div id="schema-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>2. Test Fighters Query</h2>
+      <button onclick="testFighters()">Get All Fighters</button>
+      <div id="fighters-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>3. Test Events Query</h2>
+      <button onclick="testEvents()">Get All Events</button>
+      <div id="events-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>4. Test Create Weight Class</h2>
+      <button onclick="testCreateWeightClass()">Create Weight Class</button>
+      <div id="create-weight-class-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>5. Test Create Fighter</h2>
+      <button onclick="testCreateFighter()">Create Test Fighter</button>
+      <div id="create-fighter-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>6. Test Rankings</h2>
+      <button onclick="testRankings()">Get Rankings</button>
+      <div id="rankings-result" class="result"></div>
+    </div>
+
+    <script>
+      async function graphqlRequest(query, variables = {}) {
+        try {
+          const response = await fetch('http://localhost:3000/graphql', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query, variables }),
+          });
+
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          return { errors: [{ message: error.message }] };
+        }
+      }
+
+      async function testSchema() {
+        const query = `
+                query {
+                    __schema {
+                        types {
+                            name
+                        }
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        const resultDiv = document.getElementById('schema-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Schema types: ' +
+            result.data.__schema.types.map((t) => t.name).join(', ');
+        }
+      }
+
+      async function testFighters() {
+        const query = `
+                query {
+                    fighters {
+                        id
+                        name
+                        wins
+                        losses
+                        draws
+                        knockouts
+                        submissions
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        const resultDiv = document.getElementById('fighters-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Fighters: ' + JSON.stringify(result.data.fighters, null, 2);
+        }
+      }
+
+      async function testEvents() {
+        const query = `
+                query {
+                    events {
+                        id
+                        name
+                        location
+                        event_date
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        const resultDiv = document.getElementById('events-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Events: ' + JSON.stringify(result.data.events, null, 2);
+        }
+      }
+
+      async function testCreateWeightClass() {
+        const mutation = `
+                mutation {
+                    createWeightClass(input: {
+                        name: "Heavyweight"
+                    }) {
+                        id
+                        name
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(mutation);
+        const resultDiv = document.getElementById('create-weight-class-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Created Weight Class: ' +
+            JSON.stringify(result.data.createWeightClass, null, 2);
+        }
+      }
+
+      async function testCreateFighter() {
+        const mutation = `
+                mutation {
+                    createFighter(input: {
+                        name: "Test Fighter"
+                        birth_date: "1990-01-01"
+                        weightClassId: 1
+                    }) {
+                        id
+                        name
+                        wins
+                        losses
+                        draws
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(mutation);
+        const resultDiv = document.getElementById('create-fighter-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Created Fighter: ' +
+            JSON.stringify(result.data.createFighter, null, 2);
+        }
+      }
+
+      async function testRankings() {
+        const query = `
+                query {
+                    rankingsByWeightClass(weightClassId: 1) {
+                        id
+                        rankPosition
+                        points
+                        fighter {
+                            name
+                        }
+                    }
+                }
+            `;
+
+        const result = await graphqlRequest(query);
+        const resultDiv = document.getElementById('rankings-result');
+
+        if (result.errors) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = 'Error: ' + result.errors[0].message;
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.textContent =
+            'Rankings: ' +
+            JSON.stringify(result.data.rankingsByWeightClass, null, 2);
+        }
+      }
+    </script>
+  </body>
+</html>
