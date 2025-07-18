@@ -4,8 +4,8 @@ import { Ranking } from './ranking.entity';
 
 @Entity('weight_classes')
 export class WeightClass {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: 100 })
   name: string;

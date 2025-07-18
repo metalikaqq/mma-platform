@@ -15,7 +15,7 @@ export class FighterService {
     return this.fighterRepository.findAll();
   }
 
-  async findById(id: number): Promise<Fighter> {
+  async findById(id: string): Promise<Fighter> {
     const fighter = await this.fighterRepository.findById(id);
     if (!fighter) {
       throw new NotFoundException(`Fighter with ID ${id} not found`);
@@ -23,7 +23,7 @@ export class FighterService {
     return fighter;
   }
 
-  async findByWeightClass(weightClassId: number): Promise<Fighter[]> {
+  async findByWeightClass(weightClassId: string): Promise<Fighter[]> {
     return this.fighterRepository.findByWeightClass(weightClassId);
   }
 
@@ -38,7 +38,7 @@ export class FighterService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateFighterDto: UpdateFighterDto,
   ): Promise<Fighter> {
     const fighter = await this.findById(id);
@@ -51,13 +51,13 @@ export class FighterService {
     return this.fighterRepository.update(id, updateData);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.findById(id);
     return this.fighterRepository.delete(id);
   }
 
   async updateFighterStats(
-    fighterId: number,
+    fighterId: string,
     result: 'win' | 'loss' | 'draw',
     method?: 'KO' | 'SUBMISSION',
   ): Promise<void> {

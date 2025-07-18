@@ -24,7 +24,7 @@ export class FightService {
     });
   }
 
-  async findById(id: number): Promise<Fight> {
+  async findById(id: string): Promise<Fight> {
     const fight = await this.fightTypeOrmRepository.findOne({
       where: { id },
       relations: ['event', 'fighter1', 'fighter2', 'winner'],
@@ -45,14 +45,14 @@ export class FightService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateFightDto: Partial<CreateFightDto>,
   ): Promise<Fight> {
     await this.findById(id);
     return this.fightRepository.update(id, updateFightDto);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.findById(id);
     return this.fightRepository.delete(id);
   }

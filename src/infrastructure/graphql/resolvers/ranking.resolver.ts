@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, ID } from '@nestjs/graphql';
 import { RankingService } from '../../../application/services/ranking.service';
 import { RankingSchema } from '../schemas/ranking.schema';
 import { Ranking } from '../../../domain/entities/ranking.entity';
@@ -24,7 +24,7 @@ export class RankingResolver {
 
   @Query(() => [RankingSchema])
   async rankingsByWeightClass(
-    @Args('weightClassId', { type: () => Int }) weightClassId: number,
+    @Args('weightClassId', { type: () => ID }) weightClassId: string,
   ): Promise<RankingSchema[]> {
     const rankings = await this.rankingService.findByWeightClass(weightClassId);
     return rankings.map((ranking) => this.transformRankingForGraphQL(ranking));

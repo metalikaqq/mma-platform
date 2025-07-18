@@ -1,23 +1,23 @@
-import { IsNumber, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { FightResult } from '../../domain/entities';
 
 export class CreateFightDto {
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
-  eventId: number;
+  eventId: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
-  fighter1Id: number;
+  fighter1Id: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
-  fighter2Id: number;
+  fighter2Id: string;
 
   @IsEnum(FightResult)
   result: FightResult;
 
   @IsOptional()
-  @IsNumber()
-  winnerId?: number;
+  @IsUUID()
+  winnerId?: string;
 }

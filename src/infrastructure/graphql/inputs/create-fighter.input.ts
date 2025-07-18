@@ -1,10 +1,10 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 import {
   IsString,
   IsNotEmpty,
   IsOptional,
   IsDateString,
-  IsNumber,
+  IsUUID,
 } from 'class-validator';
 
 @InputType()
@@ -19,8 +19,8 @@ export class CreateFighterInput {
   @IsDateString()
   birth_date?: string;
 
-  @Field(() => Int)
-  @IsNumber()
+  @Field(() => ID)
+  @IsUUID()
   @IsNotEmpty()
-  weightClassId: number;
+  weightClassId: string;
 }

@@ -4,7 +4,7 @@ import { WeightClassSchema } from './weight-class.schema';
 @ObjectType('Fighter')
 export class FighterSchema {
   @Field(() => ID)
-  id: number;
+  id: string;
 
   @Field()
   name: string;
@@ -27,8 +27,8 @@ export class FighterSchema {
   @Field(() => Int)
   submissions: number;
 
-  @Field(() => Int)
-  weightClassId: number;
+  @Field(() => ID)
+  weightClassId: string;
 
   @Field(() => WeightClassSchema, { nullable: true })
   weightClass?: WeightClassSchema;

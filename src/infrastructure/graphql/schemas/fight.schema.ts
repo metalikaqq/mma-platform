@@ -10,22 +10,22 @@ registerEnumType(FightResult, {
 @ObjectType('Fight')
 export class FightSchema {
   @Field(() => ID)
-  id: number;
+  id: string;
 
-  @Field(() => Int)
-  eventId: number;
+  @Field(() => ID)
+  eventId: string;
 
-  @Field(() => Int)
-  fighter1Id: number;
+  @Field(() => ID)
+  fighter1Id: string;
 
-  @Field(() => Int)
-  fighter2Id: number;
+  @Field(() => ID)
+  fighter2Id: string;
 
   @Field(() => FightResult)
   result: FightResult;
 
-  @Field(() => Int, { nullable: true })
-  winnerId?: number;
+  @Field(() => ID, { nullable: true })
+  winnerId?: string;
 
   @Field(() => EventSchema, { nullable: true })
   event?: EventSchema;

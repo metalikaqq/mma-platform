@@ -10,14 +10,14 @@ import { WeightClass } from './weight-class.entity';
 
 @Entity('rankings')
 export class Ranking {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ name: 'fighter_id' })
-  fighterId: number;
+  @Column({ name: 'fighter_id', type: 'uuid' })
+  fighterId: string;
 
-  @Column({ name: 'weight_class_id' })
-  weightClassId: number;
+  @Column({ name: 'weight_class_id', type: 'uuid' })
+  weightClassId: string;
 
   @Column({ type: 'int', default: 0 })
   points: number;

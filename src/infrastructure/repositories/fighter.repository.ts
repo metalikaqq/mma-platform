@@ -17,21 +17,21 @@ export class FighterRepository implements IFighterRepository {
     });
   }
 
-  async findById(id: number): Promise<Fighter | null> {
+  async findById(id: string): Promise<Fighter | null> {
     return this.repository.findOne({
       where: { id },
       relations: ['weightClass'],
     });
   }
 
-  async findByWeightClass(weightClassId: number): Promise<Fighter[]> {
+  async findByWeightClass(weightClassId: string): Promise<Fighter[]> {
     return this.repository.find({
       where: { weightClassId },
       relations: ['weightClass'],
     });
   }
 
-  async findWithStats(id: number): Promise<Fighter | null> {
+  async findWithStats(id: string): Promise<Fighter | null> {
     return this.repository.findOne({
       where: { id },
       relations: ['weightClass', 'fightsAsFighter1', 'fightsAsFighter2'],
@@ -43,13 +43,13 @@ export class FighterRepository implements IFighterRepository {
     return this.repository.save(fighter);
   }
 
-  async update(id: number, entity: Partial<Fighter>): Promise<Fighter> {
+  async update(id: string, entity: Partial<Fighter>): Promise<Fighter> {
     await this.repository.update(id, entity);
     return this.findById(id) as Promise<Fighter>;
   }
 
   async updateStats(
-    id: number,
+    id: string,
     stats: Partial<
       Pick<Fighter, 'wins' | 'losses' | 'draws' | 'knockouts' | 'submissions'>
     >,
@@ -58,7 +58,7 @@ export class FighterRepository implements IFighterRepository {
     return this.findById(id) as Promise<Fighter>;
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }

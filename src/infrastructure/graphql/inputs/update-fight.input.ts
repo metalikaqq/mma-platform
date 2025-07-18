@@ -1,31 +1,31 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
-import { IsNumber, IsEnum, IsOptional } from 'class-validator';
+import { InputType, Field, ID } from '@nestjs/graphql';
+import { IsUUID, IsEnum, IsOptional } from 'class-validator';
 import { FightResult } from '../../../domain/entities';
 
 @InputType()
 export class UpdateFightInput {
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  eventId?: number;
+  @IsUUID()
+  eventId?: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  fighter1Id?: number;
+  @IsUUID()
+  fighter1Id?: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  fighter2Id?: number;
+  @IsUUID()
+  fighter2Id?: string;
 
   @Field(() => FightResult, { nullable: true })
   @IsOptional()
   @IsEnum(FightResult)
   result?: FightResult;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  winnerId?: number;
+  @IsUUID()
+  winnerId?: string;
 }

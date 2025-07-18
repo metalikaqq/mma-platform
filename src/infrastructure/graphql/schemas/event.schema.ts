@@ -4,7 +4,7 @@ import { FightSchema } from './fight.schema';
 @ObjectType('Event')
 export class EventSchema {
   @Field(() => ID)
-  id: number;
+  id: string;
 
   @Field()
   name: string;

@@ -17,23 +17,23 @@ export enum FightResult {
 
 @Entity('fights')
 export class Fight {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ name: 'event_id' })
-  eventId: number;
+  @Column({ name: 'event_id', type: 'uuid' })
+  eventId: string;
 
-  @Column({ name: 'fighter1_id' })
-  fighter1Id: number;
+  @Column({ name: 'fighter1_id', type: 'uuid' })
+  fighter1Id: string;
 
-  @Column({ name: 'fighter2_id' })
-  fighter2Id: number;
+  @Column({ name: 'fighter2_id', type: 'uuid' })
+  fighter2Id: string;
 
   @Column({ type: 'enum', enum: FightResult })
   result: FightResult;
 
-  @Column({ name: 'winner_id', nullable: true })
-  winnerId: number;
+  @Column({ name: 'winner_id', type: 'uuid', nullable: true })
+  winnerId: string;
 
   @ManyToOne(() => Event, (event) => event.fights)
   @JoinColumn({ name: 'event_id' })

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsUUID } from 'class-validator';
 
 export class UpdateFighterDto {
   @IsOptional()
@@ -10,6 +10,6 @@ export class UpdateFighterDto {
   birth_date?: string;
 
   @IsOptional()
-  @IsNumber()
-  weightClassId?: number;
+  @IsUUID()
+  weightClassId?: string;
 }

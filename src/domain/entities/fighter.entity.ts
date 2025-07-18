@@ -12,8 +12,8 @@ import { Ranking } from './ranking.entity';
 
 @Entity('fighters')
 export class Fighter {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
@@ -36,8 +36,8 @@ export class Fighter {
   @Column({ type: 'int', default: 0 })
   submissions: number;
 
-  @Column({ name: 'weight_class_id' })
-  weightClassId: number;
+  @Column({ name: 'weight_class_id', type: 'uuid' })
+  weightClassId: string;
 
   @ManyToOne(() => WeightClass, (weightClass) => weightClass.fighters)
   @JoinColumn({ name: 'weight_class_id' })

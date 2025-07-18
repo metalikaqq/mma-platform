@@ -669,9 +669,9 @@
               const updateQuery = `
                 mutation {
                   updateFighter(input: {
-                    id: ${fighter.id}
+                    id: "${fighter.id}"
                     name: "${fighter.name}"
-                    weightClassId: ${keepId}
+                    weightClassId: "${keepId}"
                   }) {
                     id
                     name
@@ -690,7 +690,7 @@
           for (const duplicateId of duplicateIds) {
             const deleteQuery = `
               mutation {
-                deleteWeightClass(id: ${duplicateId})
+                deleteWeightClass(id: "${duplicateId}")
               }
             `;
             
@@ -738,7 +738,7 @@
                     createFighter(input: {
                         name: "${name}"
                         birth_date: "${birthDate}"
-                        weightClassId: ${weightClassId}
+                        weightClassId: "${weightClassId}"
                     }) {
                         id
                         name
@@ -874,11 +874,11 @@
         const query = `
                 mutation {
                     createFight(input: {
-                        eventId: ${eventId}
-                        fighter1Id: ${fighter1Id}
-                        fighter2Id: ${fighter2Id}
+                        eventId: "${eventId}"
+                        fighter1Id: "${fighter1Id}"
+                        fighter2Id: "${fighter2Id}"
                         result: ${result}
-                        winnerId: ${winnerId}
+                        winnerId: "${winnerId}"
                     }) {
                         id
                         result
@@ -970,7 +970,7 @@
         showLoading('rankings-result');
         const query = `
                 query {
-                    rankingsByWeightClass(weightClassId: ${weightClassId}) {
+                    rankingsByWeightClass(weightClassId: "${weightClassId}") {
                         id
                         rankPosition
                         points

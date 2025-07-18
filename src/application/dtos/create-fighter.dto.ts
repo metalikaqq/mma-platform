@@ -3,7 +3,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsDateString,
-  IsNumber,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateFighterDto {
@@ -15,7 +15,7 @@ export class CreateFighterDto {
   @IsDateString()
   birth_date?: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
-  weightClassId: number;
+  weightClassId: string;
 }

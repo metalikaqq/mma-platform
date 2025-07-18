@@ -16,17 +16,17 @@ type Fighter {
   draws: Int!
   knockouts: Int!
   submissions: Int!
-  weightClassId: Int!
+  weightClassId: ID!
   weightClass: WeightClass
 }
 
 type Fight {
   id: ID!
-  eventId: Int!
-  fighter1Id: Int!
-  fighter2Id: Int!
+  eventId: ID!
+  fighter1Id: ID!
+  fighter2Id: ID!
   result: FightResult!
-  winnerId: Int
+  winnerId: ID
   event: Event
   fighter1: Fighter
   fighter2: Fighter
@@ -50,8 +50,8 @@ type Event {
 
 type Ranking {
   id: ID!
-  fighterId: Int!
-  weightClassId: Int!
+  fighterId: ID!
+  weightClassId: ID!
   points: Int!
   rankPosition: Int!
   fighter: Fighter
@@ -60,26 +60,26 @@ type Ranking {
 
 type Query {
   fighters: [Fighter!]!
-  fighter(id: Int!): Fighter!
-  fightersByWeightClass(weightClassId: Int!): [Fighter!]!
+  fighter(id: String!): Fighter!
+  fightersByWeightClass(weightClassId: String!): [Fighter!]!
   events: [Event!]!
-  event(id: Int!): Event!
+  event(id: ID!): Event!
   fights: [Fight!]!
-  fight(id: Int!): Fight!
-  rankingsByWeightClass(weightClassId: Int!): [Ranking!]!
+  fight(id: ID!): Fight!
+  rankingsByWeightClass(weightClassId: ID!): [Ranking!]!
   weightClasses: [WeightClass!]!
 }
 
 type Mutation {
   createFighter(input: CreateFighterInput!): Fighter!
-  updateFighter(id: Int!, input: UpdateFighterInput!): Fighter!
-  deleteFighter(id: Int!): Boolean!
+  updateFighter(id: String!, input: UpdateFighterInput!): Fighter!
+  deleteFighter(id: String!): Boolean!
   createEvent(input: CreateEventInput!): Event!
-  updateEvent(id: Int!, input: UpdateEventInput!): Event!
-  deleteEvent(id: Int!): Boolean!
+  updateEvent(id: ID!, input: UpdateEventInput!): Event!
+  deleteEvent(id: ID!): Boolean!
   createFight(input: CreateFightInput!): Fight!
-  updateFight(id: Int!, input: UpdateFightInput!): Fight!
-  deleteFight(id: Int!): Boolean!
+  updateFight(id: ID!, input: UpdateFightInput!): Fight!
+  deleteFight(id: ID!): Boolean!
   createWeightClass(input: CreateWeightClassInput!): WeightClass!
   deleteWeightClass(id: Int!): Boolean!
   deleteAllWeightClasses: Boolean!
@@ -88,13 +88,13 @@ type Mutation {
 input CreateFighterInput {
   name: String!
   birth_date: String
-  weightClassId: Int!
+  weightClassId: ID!
 }
 
 input UpdateFighterInput {
   name: String
   birth_date: String
-  weightClassId: Int
+  weightClassId: ID
 }
 
 input CreateEventInput {
@@ -110,19 +110,19 @@ input UpdateEventInput {
 }
 
 input CreateFightInput {
-  eventId: Int!
-  fighter1Id: Int!
-  fighter2Id: Int!
+  eventId: ID!
+  fighter1Id: ID!
+  fighter2Id: ID!
   result: FightResult!
-  winnerId: Int
+  winnerId: ID
 }
 
 input UpdateFightInput {
-  eventId: Int
-  fighter1Id: Int
-  fighter2Id: Int
+  eventId: ID
+  fighter1Id: ID
+  fighter2Id: ID
   result: FightResult
-  winnerId: Int
+  winnerId: ID
 }
 
 input CreateWeightClassInput {

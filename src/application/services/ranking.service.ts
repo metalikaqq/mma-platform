@@ -12,7 +12,7 @@ export class RankingService {
     private readonly fighterRepository: IFighterRepository,
   ) {}
 
-  async findByWeightClass(weightClassId: number): Promise<Ranking[]> {
+  async findByWeightClass(weightClassId: string): Promise<Ranking[]> {
     return this.rankingRepository.findByWeightClass(weightClassId);
   }
 
@@ -31,7 +31,7 @@ export class RankingService {
     await this.recalculateRankings(fighter1.weightClassId);
   }
 
-  private calculatePoints(fight: Fight, fighterId: number): number {
+  private calculatePoints(fight: Fight, fighterId: string): number {
     const { result, winnerId } = fight;
 
     if (result === FightResult.DRAW) {
@@ -76,7 +76,7 @@ export class RankingService {
     }
   }
 
-  private async recalculateRankings(weightClassId: number): Promise<void> {
+  private async recalculateRankings(weightClassId: string): Promise<void> {
     const rankings =
       await this.rankingRepository.findByWeightClass(weightClassId);
 

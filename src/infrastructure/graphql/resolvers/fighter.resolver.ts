@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FighterService } from '../../../application/services/fighter.service';
 import { FighterSchema } from '../schemas/fighter.schema';
 import { CreateFighterInput } from '../inputs/create-fighter.input';
@@ -27,7 +27,7 @@ export class FighterResolver {
 
   @Query(() => FighterSchema)
   async fighter(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => String }) id: string,
   ): Promise<FighterSchema> {
     const fighter = await this.fighterService.findById(id);
     return this.transformFighterForGraphQL(fighter);
@@ -35,7 +35,7 @@ export class FighterResolver {
 
   @Query(() => [FighterSchema])
   async fightersByWeightClass(
-    @Args('weightClassId', { type: () => Int }) weightClassId: number,
+    @Args('weightClassId', { type: () => String }) weightClassId: string,
   ): Promise<FighterSchema[]> {
     const fighters = await this.fighterService.findByWeightClass(weightClassId);
     return fighters.map((fighter) => this.transformFighterForGraphQL(fighter));
@@ -51,7 +51,7 @@ export class FighterResolver {
 
   @Mutation(() => FighterSchema)
   async updateFighter(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => String }) id: string,
     @Args('input') input: UpdateFighterInput,
   ): Promise<FighterSchema> {
     const fighter = await this.fighterService.update(id, input);
@@ -60,7 +60,7 @@ export class FighterResolver {
 
   @Mutation(() => Boolean)
   async deleteFighter(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => String }) id: string,
   ): Promise<boolean> {
     await this.fighterService.delete(id);
     return true;

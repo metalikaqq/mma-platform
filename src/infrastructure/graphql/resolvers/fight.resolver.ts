@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { FightService } from '../../../application/services/fight.service';
 import { FightSchema } from '../schemas/fight.schema';
 import { CreateFightInput } from '../inputs/create-fight.input';
@@ -60,7 +60,7 @@ export class FightResolver {
 
   @Query(() => FightSchema)
   async fight(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<FightSchema> {
     const fight = await this.fightService.findById(id);
     return this.transformFightForGraphQL(fight);
@@ -76,7 +76,7 @@ export class FightResolver {
 
   @Mutation(() => FightSchema)
   async updateFight(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
     @Args('input') input: UpdateFightInput,
   ): Promise<FightSchema> {
     const fight = await this.fightService.update(id, input);
@@ -85,7 +85,7 @@ export class FightResolver {
 
   @Mutation(() => Boolean)
   async deleteFight(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<boolean> {
     await this.fightService.delete(id);
     return true;

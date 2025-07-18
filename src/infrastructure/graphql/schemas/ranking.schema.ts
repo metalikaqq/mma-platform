@@ -5,13 +5,13 @@ import { WeightClassSchema } from './weight-class.schema';
 @ObjectType('Ranking')
 export class RankingSchema {
   @Field(() => ID)
-  id: number;
+  id: string;
 
-  @Field(() => Int)
-  fighterId: number;
+  @Field(() => ID)
+  fighterId: string;
 
-  @Field(() => Int)
-  weightClassId: number;
+  @Field(() => ID)
+  weightClassId: string;
 
   @Field(() => Int)
   points: number;

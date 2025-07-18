@@ -14,7 +14,7 @@ export class EventService {
     return this.eventRepository.findAll();
   }
 
-  async findById(id: number): Promise<Event> {
+  async findById(id: string): Promise<Event> {
     const event = await this.eventRepository.findById(id);
     if (!event) {
       throw new NotFoundException(`Event with ID ${id} not found`);
@@ -31,7 +31,7 @@ export class EventService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateEventDto: Partial<CreateEventDto>,
   ): Promise<Event> {
     await this.findById(id);
@@ -44,7 +44,7 @@ export class EventService {
     return this.eventRepository.update(id, updateData);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.findById(id);
     return this.eventRepository.delete(id);
   }

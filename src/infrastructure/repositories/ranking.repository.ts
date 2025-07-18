@@ -18,14 +18,14 @@ export class RankingRepository implements IRankingRepository {
     });
   }
 
-  async findById(id: number): Promise<Ranking | null> {
+  async findById(id: string): Promise<Ranking | null> {
     return this.repository.findOne({
       where: { id },
       relations: ['fighter', 'weightClass'],
     });
   }
 
-  async findByWeightClass(weightClassId: number): Promise<Ranking[]> {
+  async findByWeightClass(weightClassId: string): Promise<Ranking[]> {
     return this.repository.find({
       where: { weightClassId },
       relations: ['fighter', 'weightClass'],
@@ -33,7 +33,7 @@ export class RankingRepository implements IRankingRepository {
     });
   }
 
-  async findByFighter(fighterId: number): Promise<Ranking[]> {
+  async findByFighter(fighterId: string): Promise<Ranking[]> {
     return this.repository.find({
       where: { fighterId },
       relations: ['fighter', 'weightClass'],
@@ -45,13 +45,13 @@ export class RankingRepository implements IRankingRepository {
     return this.repository.save(ranking);
   }
 
-  async update(id: number, entity: Partial<Ranking>): Promise<Ranking> {
+  async update(id: string, entity: Partial<Ranking>): Promise<Ranking> {
     await this.repository.update(id, entity);
     return this.findById(id) as Promise<Ranking>;
   }
 
   async updateRankings(
-    weightClassId: number,
+    weightClassId: string,
     rankings: Partial<Ranking>[],
   ): Promise<void> {
     for (const ranking of rankings) {
@@ -61,7 +61,7 @@ export class RankingRepository implements IRankingRepository {
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }

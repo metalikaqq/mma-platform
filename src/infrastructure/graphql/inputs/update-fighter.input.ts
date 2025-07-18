@@ -1,5 +1,5 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
-import { IsString, IsOptional, IsDateString, IsNumber } from 'class-validator';
+import { InputType, Field, ID } from '@nestjs/graphql';
+import { IsString, IsOptional, IsDateString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UpdateFighterInput {
@@ -13,8 +13,8 @@ export class UpdateFighterInput {
   @IsDateString()
   birth_date?: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  weightClassId?: number;
+  @IsUUID()
+  weightClassId?: string;
 }

@@ -2,10 +2,10 @@ import { Ranking } from '../entities';
 import { IRepository } from './repository.interface';
 
 export interface IRankingRepository extends IRepository<Ranking> {
-  findByWeightClass(weightClassId: number): Promise<Ranking[]>;
-  findByFighter(fighterId: number): Promise<Ranking[]>;
+  findByWeightClass(weightClassId: string): Promise<Ranking[]>;
+  findByFighter(fighterId: string): Promise<Ranking[]>;
   updateRankings(
-    weightClassId: number,
+    weightClassId: string,
     rankings: Partial<Ranking>[],
   ): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { EventService } from '../../../application/services/event.service';
 import { EventSchema } from '../schemas/event.schema';
 import { CreateEventInput } from '../inputs/create-event.input';
@@ -74,7 +74,7 @@ export class EventResolver {
 
   @Query(() => EventSchema)
   async event(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<EventSchema> {
     const event = await this.eventService.findById(id);
     return this.transformEventForGraphQL(event, true);
@@ -90,7 +90,7 @@ export class EventResolver {
 
   @Mutation(() => EventSchema)
   async updateEvent(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
     @Args('input') input: UpdateEventInput,
   ): Promise<EventSchema> {
     const event = await this.eventService.update(id, input);
@@ -99,7 +99,7 @@ export class EventResolver {
 
   @Mutation(() => Boolean)
   async deleteEvent(
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<boolean> {
     await this.eventService.delete(id);
     return true;
