@@ -25,6 +25,18 @@ export class Ranking {
   @Column({ name: 'rank_position', type: 'int' })
   rankPosition: number;
 
+  @Column({ type: 'int', default: 0 })
+  wins: number;
+
+  @Column({ type: 'int', default: 0 })
+  losses: number;
+
+  @Column({ type: 'int', default: 0 })
+  draws: number;
+
+  @Column({ type: 'int', default: 0 })
+  position: number;
+
   @ManyToOne(() => Fighter, (fighter) => fighter.rankings)
   @JoinColumn({ name: 'fighter_id' })
   fighter: Fighter;

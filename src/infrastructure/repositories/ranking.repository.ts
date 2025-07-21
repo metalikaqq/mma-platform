@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Ranking } from '../../domain/entities';
+import { Ranking, WeightClass } from '../../domain/entities';
 import { IRankingRepository } from '../../domain/interfaces/ranking.repository.interface';
 
 @Injectable()
@@ -9,6 +9,8 @@ export class RankingRepository implements IRankingRepository {
   constructor(
     @InjectRepository(Ranking)
     private readonly repository: Repository<Ranking>,
+    @InjectRepository(WeightClass)
+    private readonly weightClassRepository: Repository<WeightClass>,
   ) {}
 
   async findAll(): Promise<Ranking[]> {
@@ -38,6 +40,29 @@ export class RankingRepository implements IRankingRepository {
       where: { fighterId },
       relations: ['fighter', 'weightClass'],
     });
+  }
+
+  async findByFighterAndWeightClass(fighterId: string, weightClassId: string): Promise<Ranking | null> {
+    return this.repository.findOne({
+      where: { fighterId, weightClassId },
+      relations: ['fighter', 'weightClass'],
+    });
+  }
+
+  async findByWeightClassOrderedByPoints(weightClassId: string): Promise<Ranking[]> {
+    return this.repository.find({
+      where: { weightClassId },
+      relations: ['fighter', 'weightClass'],
+      order: { points: 'DESC', rankPosition: 'ASC' },
+    });
+  }
+
+  async getAllWeightClasses(): Promise<WeightClass[]> {
+    return this.weightClassRepository.find();
+  }
+
+  async save(ranking: Ranking): Promise<Ranking> {
+    return this.repository.save(ranking);
   }
 
   async create(entity: Partial<Ranking>): Promise<Ranking> {

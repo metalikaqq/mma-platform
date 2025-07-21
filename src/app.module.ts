@@ -1,8 +1,12 @@
+// Import polyfills first, before any other imports
+import './polyfills';
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ScheduleModule } from '@nestjs/schedule';
 import { join } from 'path';
 import { Repository } from 'typeorm';
 
@@ -13,6 +17,7 @@ import { FighterService } from './application/services/fighter.service';
 import { EventService } from './application/services/event.service';
 import { FightService } from './application/services/fight.service';
 import { RankingService } from './application/services/ranking.service';
+import { BackgroundRankingService } from './application/services/background-ranking.service';
 
 import { FighterRepository } from './infrastructure/repositories/fighter.repository';
 import { RankingRepository } from './infrastructure/repositories/ranking.repository';
@@ -30,6 +35,7 @@ import { WeightClassResolver } from './infrastructure/graphql/resolvers/weight-c
       isGlobal: true,
       load: [databaseConfig],
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) =>
         configService.get('database')!,
@@ -50,6 +56,7 @@ import { WeightClassResolver } from './infrastructure/graphql/resolvers/weight-c
     EventService,
     FightService,
     RankingService,
+    BackgroundRankingService,
     {
       provide: 'IFighterRepository',
       useClass: FighterRepository,
