@@ -1,5 +1,6 @@
 # Multi-stage build for optimization
-FROM node:18-alpine AS builder
+# Using node:16-alpine as an alternative that may be more widely cached
+FROM node:16-alpine AS builder
 
 # Set working directory
 WORKDIR /app
